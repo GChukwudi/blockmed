@@ -49,19 +49,7 @@ int is_valid_email(const char *email) {
     const char *at_sign = strchr(email, '@');
     const char *dot = strrchr(email, '.');
 
-    // Basic structure check: has '@', has '.', and '.' comes after '@'
-    if (!(at_sign && dot && at_sign < dot && at_sign > email)) {
-        return 0;
-    }
-
-    // Domain-specific check for ALU
-    if (strstr(at_sign, "@alueducation.com") ||
-        strstr(at_sign, "@si.alueducation.com") ||
-        strstr(at_sign, "@alustudent.com")) {
-        return 1;
-    }
-
-    return 0;
+    return (at_sign && dot && at_sign < dot && at_sign > email)
 }
 
 // function to securely read input from the user
