@@ -49,7 +49,7 @@ int is_valid_email(const char *email) {
     const char *at_sign = strchr(email, '@');
     const char *dot = strrchr(email, '.');
 
-    return (at_sign && dot && at_sign < dot && at_sign > email)
+    return (at_sign && dot && at_sign < dot && at_sign > email);
 }
 
 // function to securely read input from the user

@@ -66,7 +66,7 @@ int authenticate_user(const char *email, const char *password, user_t *user) {
     return 0; // Authentication failed
 }
 
-void register_user(const char *email, const char *password) {
+int register_user(const char *email, const char *password) {
     if (!email || !password || !is_valid_email(email)) return 0;
 
     user_role_t role = get_role_from_email(email);

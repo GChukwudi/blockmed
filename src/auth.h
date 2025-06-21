@@ -21,7 +21,7 @@ typedef struct {
 // Function prototypes
 user_role_t get_role_from_email(const char *email);
 int authenticate_user(const char *email, const char *password, user_t *user);
-void register_user(const char *email, const char *password);
+int register_user(const char *email, const char *password);
 void hash_password(const char *password, char *hash);
 int has_write_permission(user_role_t role);
 int has_full_permission(user_role_t role);
