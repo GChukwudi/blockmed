@@ -112,20 +112,23 @@ void handle_validate_chain(const blockchain_t *chain, const user_t *user) {
 
 // Function to handle user login
 void handle_user_login(user_t *user) {
-    char email[MAX_EMAIL_SIZE], password[HASH_SIZE];
-
+    char email[MAX_EMAIL_SIZE], password[MAX_PASSWORD_SIZE];
+    
     printf("\n=== BlockMed Login ===\n");
     printf("Email: ");
     secure_input(email, sizeof(email));
-
+    
     printf("Password: ");
     secure_input(password, sizeof(password));
-
+    
     if (authenticate_user(email, password, user)) {
-        printf("Login successful! Welcome %s (%s)\n", user->email, role_to_string(user->role));
+        printf("Login successful! Welcome %s (%s)\n", 
+               user->email, role_to_string(user->role));
+        log_operation(LOG_INFO, user->email, "Successful login");
     } else {
-        printf("Login failed! Invalid email or password.\n");
+        printf("Login failed: Invalid credentials\n");
         log_security_event(email, "Failed login attempt");
+        // Ensure user struct is properly reset on failed login
         memset(user, 0, sizeof(user_t));
         user->role = ROLE_INVALID;
     }
@@ -156,24 +159,27 @@ int run_cli(blockchain_t *chain) {
     user_t current_user = {0};
     current_user.role = ROLE_INVALID;
 
-    while (1) {
-        printf("\n1. Login\n2. Register\n3. Exit\nChoice: ");
-
+    while (current_user.role == ROLE_INVALID) {
+        printf("\n=== BlockMed Authentication ===\n");
+        printf("1. Login\n2. Register\n3. Exit\nChoice: ");
+        
         char choice[10];
         secure_input(choice, sizeof(choice));
-
+        
         switch (choice[0]) {
             case '1':
                 handle_user_login(&current_user);
+                if (current_user.role != ROLE_INVALID) {
+                    printf("Proceeding to main menu...\n");
+                }
                 break;
             case '2':
                 handle_user_registration();
                 break;
             case '3':
-                printf("Exiting BlockMed CLI. Goodbye!\n");
                 return 0;
             default:
-                printf("Invalid choice. Please try again.\n");
+                printf("Invalid choice\n");
                 break;
         }
     }
