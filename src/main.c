@@ -47,7 +47,7 @@ int main(void) {
     save_blockchain(chain, "data/blockchain.dat");
 
     // Free the blockchain resources
-    free_blockchain(chain);
+    free_blockchain(&chain);
     printf("System shutting down. Goodbye!\n");
     return result;
 }
